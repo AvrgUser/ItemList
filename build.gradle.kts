@@ -1,5 +1,7 @@
+import net.fabricmc.loom.task.ValidateAccessWidenerTask
 import org.gradle.kotlin.dsl.register
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
 	alias(libs.plugins.fabric.loom)
@@ -108,6 +110,10 @@ tasks.processResources {
 	}
 }
 
+tasks.withType<ValidateAccessWidenerTask>().configureEach {
+	dependsOn("stonecutterGenerate")
+}
+
 tasks.withType<JavaCompile>().configureEach {
 	options.release = 25
 }
@@ -128,6 +134,15 @@ java {
 
 	sourceCompatibility = JavaVersion.VERSION_25
 	targetCompatibility = JavaVersion.VERSION_25
+}
+
+tasks.withType<KotlinCompile>().configureEach {
+	compilerOptions {
+		allWarningsAsErrors = true
+		freeCompilerArgs.addAll(
+			"-Xcontext-sensitive-resolution",
+		)
+	}
 }
 
 tasks.register<Jar>("apiJar") {
