@@ -140,7 +140,6 @@ tasks.withType<KotlinCompile>().configureEach {
 	compilerOptions {
 		allWarningsAsErrors = true
 		freeCompilerArgs.addAll(
-			freeCompilerArgs.addAll(
 			// 0 (all cores) triggers a race condition in JvmIrCodegenFactory's parallel codegen on Kotlin 2.4.x,
 			// leaving corrupt .class files that break subsequent incremental builds.
 			// see: https://youtrack.jetbrains.com/issue/KT-85498/
