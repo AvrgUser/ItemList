@@ -1,19 +1,20 @@
 pluginManagement {
 	repositories {
-		mavenCentral()
-		gradlePluginPortal()
+		maven("https://maven.operationpotato.com/mirror")
 
 		maven("https://maven.fabricmc.net") {
 			content {
-				includeGroupAndSubgroups("net.fabricmc")
+				includeGroup("net.fabricmc")
 			}
 		}
-		// Stonecutter
 		maven("https://maven.kikugie.dev/snapshots") {
 			content {
-				includeGroupAndSubgroups("dev.kikugie")
+				includeGroup("dev.kikugie")
 			}
 		}
+
+		mavenCentral()
+		gradlePluginPortal()
 	}
 }
 
