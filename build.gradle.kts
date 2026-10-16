@@ -121,6 +121,7 @@ tasks.withType<JavaCompile>().configureEach {
 kotlin {
 	compilerOptions {
 		jvmTarget = JvmTarget.JVM_25
+		freeCompilerArgs.add("-Xrender-internal-diagnostic-names")
 	}
 	sourceSets.all {
 		languageSettings {
@@ -139,6 +140,7 @@ java {
 tasks.withType<KotlinCompile>().configureEach {
 	compilerOptions {
 		allWarningsAsErrors = true
+		extraWarnings = true
 		freeCompilerArgs.addAll(
 			// 0 (all cores) triggers a race condition in JvmIrCodegenFactory's parallel codegen on Kotlin 2.4.x,
 			// leaving corrupt .class files that break subsequent incremental builds.
