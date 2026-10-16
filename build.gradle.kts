@@ -170,30 +170,25 @@ tasks.register<Jar>("apiSourcesJar") {
 	}
 }
 
-val copyMainJarToRoot = tasks.register<Copy>("copyMainJarToRoot") {
-	dependsOn(tasks.named("jar"))
-
-	from(tasks.named<Jar>("jar").flatMap { it.archiveFile })
-	into(rootProject.layout.buildDirectory.dir("libs"))
-}
-
-val copyApiJarToRoot = tasks.register<Copy>("copyApiJarToRoot") {
-	dependsOn(tasks.named("apiJar"))
-
-	from(tasks.named<Jar>("apiJar").flatMap { it.archiveFile })
-	into(rootProject.layout.buildDirectory.dir("libs/api"))
-}
-
 tasks.named("assemble") {
-	dependsOn(copyMainJarToRoot, copyApiJarToRoot)
-}
-
-val cleanRootLibs = tasks.register<Delete>("cleanRootLibs") {
-	delete(rootProject.layout.buildDirectory.dir("libs"))
+	dependsOn("apiJar", "apiSourcesJar")
+	doLast {
+		val files = listOf("${base.archivesName.get()}-$version.jar", "api/${base.archivesName.get()}-api-$version.jar")
+		for (fileName in files) {
+			val sourceFile = project.projectDir.resolve("build/libs/${fileName}")
+			val targetFile = rootProject.projectDir.resolve("build/libs/${fileName}")
+			targetFile.parentFile.mkdirs()
+			targetFile.writeBytes(sourceFile.readBytes())
+		}
+	}
 }
 
 tasks.named("clean") {
-	dependsOn(cleanRootLibs)
+	doLast {
+		val libsFolder = rootProject.projectDir.resolve("build/libs")
+		if (!libsFolder.exists()) return@doLast
+		delete(libsFolder)
+	}
 }
 
 publishing {
