@@ -82,7 +82,7 @@ loom {
 		generateRunConfig = true
 		runDirectory = project.file("../../run")
 		val modsDir = rootProject.projectDir.resolve("run/mods/${sc.current.project}/")
-		jvmArguments.add("-Dfabric.modsFolder=\"$modsDir\"")
+		jvmArguments.add("-Dfabric.modsFolder=$modsDir")
 	}
 
 	accessWidenerPath = sc.process(
