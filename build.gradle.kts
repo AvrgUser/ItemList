@@ -82,6 +82,7 @@ loom {
 		generateRunConfig = true
 		runDirectory = project.file("../../run")
 		val modsDir = rootProject.projectDir.resolve("run/mods/${sc.current.project}/")
+		modsDir.mkdirs()
 		jvmArguments.add("-Dfabric.modsFolder=$modsDir")
 	}
 
